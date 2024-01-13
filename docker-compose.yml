@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    networks:
+      - spring-net
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: library
+
+  app:
+    image: library:latest # Replace with the actual image for your application
+    container_name: app
+    networks:
+      - spring-net
+    ports:
+      - "9196:9195"
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_HOST: mysqldb
+      MYSQL_PORT: 3306
+
+networks:
+  spring-net:
+
+volumes:
+  mysql-data:
